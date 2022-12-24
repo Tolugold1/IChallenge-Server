@@ -1,6 +1,6 @@
 const cors = require("cors");
 
-const urls = ["http://localhost:3000", " http://127.0.0.1:5173"];
+const urls = ["http://localhost:3000", "https://localhost:3443", "http://localhost:3001"];
 
 const corsDelegate = (req, cb) => {
     var corsOption;

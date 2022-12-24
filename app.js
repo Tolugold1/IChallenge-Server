@@ -8,17 +8,31 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const FileStorage = require("session-file-store")(session);
+const authenticate = require("./authenticate");
+const cors = require("./routes/cors")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var uploadRouter = require("./routes/upload")
 
 var app = express();
+
+app.all("*", cors.cors, (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+    res.redirect(307, "https://" + req.hostname + ":" + app.get("secPort") + req.url)
+  }
+})
 
 const mongoDb = config.MongoUrl
 mongoose.connect(mongoDb)
 .then((db) => {
   console.log("Connection to the database successful")
 }, (err) => console.log(err));
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,10 +50,14 @@ app.use(session({
   store: new FileStorage()
 }))
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use("/upload", uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

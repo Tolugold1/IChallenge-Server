@@ -5,11 +5,10 @@ const passport = require("passport");
 const User = require("../Model/user");
 const cors = require("./cors");
 const authenticate = require("../authenticate");
-const { resource } = require('../app');
 
 
 router.use(bodyParser.json());
-router.options("*", cors.corsWithOption, (req, res) => { res.sendStatus(200); })
+router.options(cors.corsWithOption, (req, res) => { res.sendStatus(200); })
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -47,7 +46,7 @@ router.post("/signup", cors.corsWithOption, (req, res) => {
 })
 
 
-router.post("/signin", cors.corsWithOption, (req, res, next) => {
+router.post("/signin", cors.corsWithOption,  (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) { return next(err);}
     if (!user) {
@@ -72,13 +71,31 @@ router.post("/signin", cors.corsWithOption, (req, res, next) => {
 })
 
 
-router.get("/user", cors.cors, authenticate.verifyUser, (req, res, next) => {
+router.get("/user", cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
   User.findOne({_id: req.user._id})
   .then((user) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.json(user)
   }, (err) => next(err)).catch(err => next(err)); 
+})
+
+
+router.get("/auth/github/login", cors.corsWithOption, passport.authenticate("github"), (req, res) => {
+  var token = authenticate.getToken({_id: req.user._id});
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.json({success: true, message: "Login successful", token: token});
+})
+
+router.get("/auth/github/callback", cors.cors, passport.authenticate('github'),
+  function(req, res) {
+    var token = authenticate.getToken({_id: req.user._id});
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.json({success: true, message: "Loging in with github is successful", token: token});
+    res.redirect('http://localhost:3001/dashboard');
+    return ;
 })
 
 module.exports = router;

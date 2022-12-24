@@ -1,3 +1,4 @@
+const GithubStrategy = require("passport-github").Strategy
 const passport = require('passport');
 const config = require("./configFile");
 const localStrategy =  require("passport-local").Strategy;
@@ -33,3 +34,33 @@ exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
 }))
 
 exports.verifyUser = passport.authenticate("jwt", {session: "false"});
+
+
+exports.githubauth = passport.use(new GithubStrategy({
+    clientID: config.github.clientId,
+    clientSecret: config.github.clientSecret,
+    callbackURL: "http://localhost:3000/users/auth/github/callback"
+}, function(accessToken, refreshToken, profile, done) {
+    console.log(profile)
+    User.findOne({githubId: profile.id}, (err, user) => {
+        if (err) {
+            return done(err, false);
+        } else if (!err && user !== null) {
+            return done(null, user);
+        } else {
+            user = new User({username: profile.username});
+            var names = profile.displayName.split(' ');
+            user.firstname = names[0];
+            user.lastname = names[1];
+            user.githubId = profile.id
+            user.save((err, user) => {
+                if (err) {
+                    return done(err, false)
+                } else {
+                    return done(null, user);
+                }
+            })
+        }
+    })
+}
+))
