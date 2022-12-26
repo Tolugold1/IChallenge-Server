@@ -41,10 +41,33 @@ uploadPics.route("/")
     },(err) => next(err)).catch(err => next(err));
 })
 
-.post( cors.corsWithOption, upload.single('pics'), (req, res) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.json({success: true, status: req.file});
+.post( cors.corsWithOption, upload.single('pics'), (req, res, next) => {
+    console.log(req.file, req.body)
+    if (req.file === null) {
+        err = new Error("File not selected");
+        err.status = 404;
+        next(err);
+    } else {
+        //red the image from the path after it has been uploaded to the server.
+        var filepath = fs.readFileSync(req.file.path)
+        //define the data to upload
+        var obj = {
+            fullname: req.body.fullname,
+            twittername: req.body.twittername,
+            githubname: req.body.githubname,
+            facebookname: req.body.facebookname,
+            pics: {
+                data: filepath,
+                contentType: req.file.mimetype
+            }
+        }
+        UserDetails.create(obj)
+        .then((resp) => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json({success: true, status: resp})
+        })
+    }
 })
 
 .put((req, res) => {

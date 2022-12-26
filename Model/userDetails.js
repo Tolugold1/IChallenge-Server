@@ -2,23 +2,23 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const detailSchema = new Schema({
-    /* fullname: {
+    fullname: {
         type: String,
         default: ""
     },
-    twitterName: {
+    twittername: {
         type: String,
         default: ""
     },
-    githubName: {
+    githubname: {
         type: String,
         default: ""
     },
-    facebookName: {
+    facebookname: {
         type: String,
         default: ""
-    }, */
-    img: {
+    },
+    pics: {
         data: Buffer,
         contentType: String
     }
