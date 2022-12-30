@@ -36,7 +36,7 @@ exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
 exports.verifyUser = passport.authenticate("jwt", {session: "false"});
 
 
-exports.githubauth = passport.use(new GithubStrategy({
+/* exports.githubauth = passport.use(new GithubStrategy({
     clientID: config.github.clientId,
     clientSecret: config.github.clientSecret,
     callbackURL: "http://localhost:3000/users/auth/github/callback"
@@ -63,4 +63,4 @@ exports.githubauth = passport.use(new GithubStrategy({
         }
     })
 }
-))
+)) */
