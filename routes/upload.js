@@ -5,7 +5,6 @@ const authenticate = require("../authenticate")
 const cors = require("./cors");
 const UserDetails = require("../Model/userDetails")
 const fs = require("fs");
-const path = require("path");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,16 +32,15 @@ uploadPics.use(bodyParser.json());
 uploadPics.route("/")
 .options(cors.corsWithOption, (req, res) => {res.sendStatus(200)})
 .get( cors.cors, authenticate.verifyUser, (req, res, next) => {
-    UserDetails.findById({_id: req.user._id})
+    UserDetails.find({userId: req.user._id})
     .then((details) => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
-        res.json(details)
+        res.json({success: true, status: details})
     },(err) => next(err)).catch(err => next(err));
 })
 
-.post( cors.corsWithOption, upload.single('pics'), (req, res, next) => {
-    console.log(req.file, req.body)
+.post( cors.corsWithOption, authenticate.verifyUser, upload.single('pics'), (req, res, next) => {
     if (req.file === null) {
         err = new Error("File not selected");
         err.status = 404;
@@ -50,8 +48,10 @@ uploadPics.route("/")
     } else {
         //red the image from the path after it has been uploaded to the server.
         var filepath = fs.readFileSync(req.file.path)
+        var pics = filepath.toString('base64');
         //define the data to upload
         var obj = {
+            userId: req.user._id,
             fullname: req.body.fullname,
             twittername: req.body.twittername,
             githubname: req.body.githubname,
