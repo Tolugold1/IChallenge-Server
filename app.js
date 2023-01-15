@@ -13,7 +13,8 @@ const cors = require("./routes/cors")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var uploadRouter = require("./routes/upload")
+var uploadRouter = require("./routes/upload");
+var requestRouter = require("./routes/request")
 
 var app = express();
 
@@ -25,14 +26,11 @@ app.all("*", cors.cors, (req, res, next) => {
   }
 })
 
-const mongoDb = config.MongoUrl
-mongoose.connect(mongoDb)
+const url = config.MongoUrl
+mongoose.connect(url)
 .then((db) => {
-  console.log("Connection to the database successful")
-}, (err) => console.log(err));
-
-
-
+  console.log("Connection to the database is established...")
+},(err) => console.log(err)).catch((err) => console.log(err));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -58,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/upload", uploadRouter);
+app.use("/request", requestRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

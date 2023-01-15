@@ -84,8 +84,7 @@ uploadPics.route("/:userDetails")
 .get(cors.corsWithOption, (req, res, next) => {
     UserDetails.find({fullname: req.params.userDetails})
     .then((user) => {
-        console.log(user)
-        if (user === null) {
+        if (!user) {
             res.statusCode = 404;
             res.setHeader("Content-Type", "application/json");
             res.json({success: false, status: "User not found"})
