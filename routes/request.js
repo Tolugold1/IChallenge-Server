@@ -7,25 +7,130 @@ const authenticate = require("../authenticate");
 
 requestRouter.use(bodyParser.json());
 requestRouter.route("/")
-.get(cors.cors, (req, res, next) => {
-    Request.find({})
-    .then((resp) => {
+.options(cors.corsWithOption, (req, res) => { res.sendStatus(200);})
+.get(cors.cors, authenticate.verifyUser, (req, res, next) => {
+    Request.findOne({myAcct: req.user._id})
+    .populate("requestSenderId")
+    .populate("requestISend")
+    .then(resp => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
-        res.json(resp);
+        res.json({success: true, status: resp});
     })
 })
 
 .post(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
-    var obj = {
-        peerUserId: req.body.peerId
-    }
-    Request.create(obj)
-    .then((resp) => {
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.json(resp)
+    Request.findOne({myAcct: req.user._id})
+    .then(resp => {
+        if (resp === null) {
+            var obj = {
+                myAcct: req.user._id
+            }
+            Request.create(obj)
+            .then(resp => {
+                res.statusCode = 200;
+                res.setHeader("Content-Type", "application/json")
+                res.json(resp)
+            })
+        } else {
+            err = new Error("Already have an acct there");
+            err.status = 404;
+            next(err)
+        }
     })
 })
 
+.put(cors.corsWithOption, (req, res, next) => {
+    res.statusCode = 401;
+    res.end("Not supported")
+})
+
+.delete(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+    Request.findByIdAndDelete({sender: req.user._id})
+    .then(resp => {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json")
+        res.json("Successfully deleted")
+    })
+})
+
+requestRouter.route("/:requestId")
+.options(cors.corsWithOption, (req, res, next) => {res.sendStatus(200);})
+/* .get(cors.cors, authenticate.verifyUser, (req, res, next) => {
+    Request.findOne({myAcct: req.user._id})
+    .populate("requestSenderId")
+    .then(resp => {
+        if (resp !== null) {
+            const sender = resp.requestSenderId.find((senderId) => {
+                if (senderId == req.params.requestId) {
+                    return senderId
+                } 
+            })
+            
+        }
+    })
+}) */
+
+.post(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+    Request.findOne({myAcct: req.params.requestId})
+    .then(resp => {
+        const idx = res.requestSenderId.indexOf(req.user._id)
+        if (idx === -1) {
+            res.statusCode = 401;
+            res.setHeader("Content-type", "application/json");
+        } else {
+            resp.requestSenderId.push(req.user._id)
+            resp.save()
+            .then(resp => {
+                Request.findById(resp._id)
+                .populate("requestSenderId")
+                .then(resp => {
+                    return resp.statusCode = 200;
+                })
+            })
+        }
+    }, (err) => next(err)).catch(err => next(err));
+
+    Request.findOne({myAcct: req.user._id})
+    .then(resp => {
+        console.log(resp)
+        const idx = resp.requestISend.indexOf(req.params.requestId)
+        if (idx === -1) {
+            res.statusCode = 401;
+        } else {
+            resp.requestISend.push(req.params.requestId)
+            resp.save()
+            .then(resp => {
+                Request.findById(resp._id).populate("requestISend")
+                .then(resp => {
+                    console.log(resp)
+                    resp.statusCode = 200;
+                    res.setHeader("Content-type", "application/json");
+                    res.json({success: true, requestISend: resp});
+                })
+            })
+        }
+    })
+})
+
+.put(cors.cors,  (req, res, next) => {
+    res.statusCode = 401;
+    res.end("Not supported for the moment.")
+})
+
+.delete(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+    Request.findOne({myAcct: req.user._id})
+    .then(resp => {
+        const sender = resp.requestSenderId.findIndex((idx) => {
+            return idx == req.params.requestId
+        })
+        resp.requestSenderId.splice(sender, 1)
+        resp.save()
+        .then(resp => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json({success: true, status: "Successfully deleted."})
+        }, (err) => next(err)).catch(err => next(err))
+    })
+})
 module.exports = requestRouter;

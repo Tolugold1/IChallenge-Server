@@ -5,10 +5,6 @@ const detailSchema = new Schema({
     userId: {
         type: String,
     },
-    fullname: {
-        type: String,
-        default: ""
-    },
     twittername: {
         type: String,
         default: ""
