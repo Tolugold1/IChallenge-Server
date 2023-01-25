@@ -78,6 +78,13 @@ router.post("/signin", cors.corsWithOption,  (req, res, next) => {
   }) (req, res, next)
 })
 
+router.post("/logout", (req, res, next) => {
+  req.logOut((err) => {
+    if (err) { return next(err) }
+    res.json({status: "http://localhost:3001/"})
+  })
+})
+
 
 router.get("/user", cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
   User.findOne({_id: req.user._id})

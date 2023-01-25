@@ -74,48 +74,56 @@ requestRouter.route("/:requestId")
 .post(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
     Request.findOne({myAcct: req.params.requestId})
     .then(resp => {
-        const idx = res.requestSenderId.indexOf(req.user._id)
+        const idx = resp.requestSenderId.indexOf(req.user._id)
         if (idx === -1) {
-            res.statusCode = 401;
-            res.setHeader("Content-type", "application/json");
-        } else {
             resp.requestSenderId.push(req.user._id)
             resp.save()
             .then(resp => {
                 Request.findById(resp._id)
                 .populate("requestSenderId")
                 .then(resp => {
-                    return resp.statusCode = 200;
+                    res.statusCode = 200;
                 })
             })
+        } else {
+            res.statusCode = 401;
         }
     }, (err) => next(err)).catch(err => next(err));
 
     Request.findOne({myAcct: req.user._id})
     .then(resp => {
-        console.log(resp)
         const idx = resp.requestISend.indexOf(req.params.requestId)
         if (idx === -1) {
-            res.statusCode = 401;
-        } else {
             resp.requestISend.push(req.params.requestId)
             resp.save()
             .then(resp => {
                 Request.findById(resp._id).populate("requestISend")
                 .then(resp => {
-                    console.log(resp)
-                    resp.statusCode = 200;
-                    res.setHeader("Content-type", "application/json");
+                    res.statusCode = 200;
+                    return res.setHeader("Content-Type", "application/json");
                     res.json({success: true, requestISend: resp});
                 })
             })
+        } else {
+            res.statusCode = 401;
         }
     })
 })
 
-.put(cors.cors,  (req, res, next) => {
-    res.statusCode = 401;
-    res.end("Not supported for the moment.")
+.put(cors.cors, authenticate.verifyUser,  (req, res, next) => {
+    Request.findOne({myAcct: req.params.requestId})
+    .then(resp => {
+        const sender = resp.requestISend.findIndex((idx) => {
+            return idx == req.params.requestId
+        })
+        resp.requestSenderId.splice(sender, 1)
+        resp.save()
+        .then(resp => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json({success: true, status: "Rrquest rejected."})
+        })
+    })
 })
 
 .delete(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
@@ -132,5 +140,6 @@ requestRouter.route("/:requestId")
             res.json({success: true, status: "Successfully deleted."})
         }, (err) => next(err)).catch(err => next(err))
     })
+    
 })
 module.exports = requestRouter;
