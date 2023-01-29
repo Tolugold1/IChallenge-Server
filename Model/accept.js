@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
+const { ObjectId } = require('mongoose/lib/types');
 const Schema = mongoose.Schema
 
 const AcceptSchema = new Schema({
-    peerUserId: {
+    myAcct: {
         type: String
-    }
-})
+    },
+    Acceptedrequest: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }]
+}, {timestamps: true})
 
-const Accept = mongoose.model("AcceptSchema", AcceptSchema);
+const Accept = mongoose.model("accept", AcceptSchema);
 module.exports = Accept;

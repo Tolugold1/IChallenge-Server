@@ -15,6 +15,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var uploadRouter = require("./routes/upload");
 var requestRouter = require("./routes/request");
+var acceptRouter = require("./routes/accept");
+var githubRouter = require("./routes/userGithubInfoRouter");
 
 var app = express();
 
@@ -57,6 +59,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/upload", uploadRouter);
 app.use("/request", requestRouter);
+app.use("/accept", acceptRouter);
+app.use("/github", githubRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

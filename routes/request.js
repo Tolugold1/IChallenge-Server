@@ -110,7 +110,7 @@ requestRouter.route("/:requestId")
     })
 })
 
-.put(cors.cors, authenticate.verifyUser,  (req, res, next) => {
+/* .put(cors.cors, authenticate.verifyUser,  (req, res, next) => {
     Request.findOne({myAcct: req.params.requestId})
     .then(resp => {
         const sender = resp.requestISend.findIndex((idx) => {
@@ -124,7 +124,7 @@ requestRouter.route("/:requestId")
             res.json({success: true, status: "Rrquest rejected."})
         })
     })
-})
+}) */
 
 .delete(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
     Request.findOne({myAcct: req.user._id})
