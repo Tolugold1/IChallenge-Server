@@ -12,12 +12,12 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function(user) {
-    return jwt.sign(user, process.env.SECRET_kEY);
+    return jwt.sign(user, process.env.SECRET_KEY);
 }
 
 const opt = {}
 opt.jwtFromRequest = jwtExtract.fromAuthHeaderAsBearerToken();
-opt.secretOrKey = process.env.SECRET_kEY
+opt.secretOrKey = process.env.SECRET_KEY
 
 exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
     console.log("jwt_payload", jwt_payload);
