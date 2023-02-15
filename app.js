@@ -10,6 +10,7 @@ const session = require("express-session");
 const FileStorage = require("session-file-store")(session);
 const authenticate = require("./authenticate");
 const cors = require("./routes/cors")
+require("dotenv").config()
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,6 +18,7 @@ var uploadRouter = require("./routes/upload");
 var requestRouter = require("./routes/request");
 var acceptRouter = require("./routes/accept");
 var githubRouter = require("./routes/userGithubInfoRouter");
+var repoRouter = require("./routes/repo")
 
 var app = express();
 
@@ -28,8 +30,7 @@ app.all("*", cors.cors, (req, res, next) => {
   }
 })
 
-const url = config.MongoUrl
-mongoose.connect(url)
+mongoose.connect(process.env.MONGODB_URL)
 .then((db) => {
   console.log("Connection to the database is established...")
 },(err) => console.log(err)).catch((err) => console.log(err));
@@ -60,7 +61,8 @@ app.use('/users', usersRouter);
 app.use("/upload", uploadRouter);
 app.use("/request", requestRouter);
 app.use("/accept", acceptRouter);
-app.use("/github", githubRouter)
+app.use("/github", githubRouter);
+app.use("/repo", repoRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

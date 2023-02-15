@@ -38,23 +38,37 @@ githubRouter.route("/:userAcctName/:repo")
         res.statusCode = 200
         return resp.json()
     }).then(resp => {
-        const date = new Date()
-        const day = date.getDay()
-        const day_arr = resp.filter(element => {
-            if (element[0] === day && element[0][2] !== 0) {
+        // filtering and getting the sum of commit to a repo per day based on the day number 0-6 representing sunday to saturday. 
+        const day_arr_with_commit = resp.filter(element => {
+            if (element[2] !== 0) {
                 return element
             }
         });
-        console.log(day_arr)
+        console.log(day_arr_with_commit)/* 
+        let day_number = [0, 1, 2, 3, 4, 5, 6];
+        let weekday_commit = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0}; */
         let sum = 0
-        for (let i = 0; i <= day_arr.length - 1; i++) {
-            sum += day_arr[i][2]
-        }
+        day_arr_with_commit.forEach((element) => {
+            sum += element[2]
+        })
         console.log(sum)
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.json(sum)
     })
 })
-
+/* .get(cors.cors, authenticate.verifyUser, (req, res, next) => {
+    fetch(`https://api.github.com/user/${req.params.userAcctName}/${req.params.repo}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(resp => {
+        res.statusCode = 200
+        return resp.json()
+    }).then(resp => {
+        
+    })
+}) */
 module.exports = githubRouter;
