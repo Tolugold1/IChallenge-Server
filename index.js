@@ -11,6 +11,7 @@ const session = require("express-session");
 const FileStorage = require("session-file-store")(session);
 const authenticate = require("./authenticate");
 const cors = require("./routes/cors")
+const port = 3443
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -79,5 +80,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;
