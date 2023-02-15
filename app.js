@@ -32,6 +32,9 @@ app.all("*", cors.cors, (req, res, next) => {
 mongoose.connect(process.env.MONGODB_URL)
 .then((db) => {
   console.log("Connection to the database is established...")
+  app.listen(process.env.PORT || 3443, () => {
+    console.log("Server listening on " + app.get("secPort"))
+  })
 },(err) => console.log(err)).catch((err) => console.log(err));
 
 // view engine setup
