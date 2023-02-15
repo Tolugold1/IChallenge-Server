@@ -46,7 +46,7 @@ var secureServer = https.createServer(opt, app);
  * secureServer listening on ...
  */
 
-secureServer.listen(app.get("secPort"), () => {
+secureServer.listen(process.env.PORT || app.get("secPort"), () => {
   console.log("Server listening on " + app.get("secPort"))
 })
 secureServer.on('error', onError);
