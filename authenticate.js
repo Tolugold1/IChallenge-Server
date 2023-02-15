@@ -1,7 +1,6 @@
 require("dotenv").config()
 const GithubStrategy = require("passport-github").Strategy
 const passport = require('passport');
-const config = require("./configFile");
 const localStrategy =  require("passport-local").Strategy;
 const jwtExtract = require("passport-jwt").ExtractJwt;
 const jwtStrategy = require("passport-jwt").Strategy;

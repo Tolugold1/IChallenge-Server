@@ -1,16 +1,15 @@
+require("dotenv").config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const config = require("./configFile")
 const passport = require("passport");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const FileStorage = require("session-file-store")(session);
 const authenticate = require("./authenticate");
 const cors = require("./routes/cors")
-require("dotenv").config()
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
