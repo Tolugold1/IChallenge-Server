@@ -1,3 +1,4 @@
+require("dotenv").config()
 const GithubStrategy = require("passport-github").Strategy
 const passport = require('passport');
 const config = require("./configFile");
@@ -12,12 +13,12 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function(user) {
-    return jwt.sign(user, config.secretKey);
+    return jwt.sign(user, process.env.SECRET_kEY);
 }
 
 const opt = {}
 opt.jwtFromRequest = jwtExtract.fromAuthHeaderAsBearerToken();
-opt.secretOrKey = config.secretKey
+opt.secretOrKey = process.env.SECRET_kEY
 
 exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
     console.log("jwt_payload", jwt_payload);

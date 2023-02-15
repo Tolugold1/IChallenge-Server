@@ -42,12 +42,12 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(config.secretKey));
+app.use(cookieParser(process.env.SECRET_kEY));
 app.use(session({
   name: "session_id",
   saveUninitialized: false,
   resave: false,
-  secret: config.secretKey,
+  secret: process.env.SECRET_kEY,
   store: new FileStorage()
 }))
 
