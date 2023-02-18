@@ -15,7 +15,7 @@ require("dotenv").config()
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT);
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 app.set("secPort", port+443);
 
@@ -29,7 +29,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(process.env.PORT || port);
 server.on('error', onError);
 server.on('listening', onListening);
 
