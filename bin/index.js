@@ -17,7 +17,7 @@ require("dotenv").config()
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-app.set("secPort", port+443);
+app.set("secPort", 3443);
 
 /**
  * Create HTTP server.
