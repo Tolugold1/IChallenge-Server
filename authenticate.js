@@ -6,13 +6,14 @@ const jwtExtract = require("passport-jwt").ExtractJwt;
 const jwtStrategy = require("passport-jwt").Strategy;
 const jwt = require("jsonwebtoken");
 const User = require("./Model/user");
+const { expires } = require("mongoose/lib/utils");
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function(user) {
-    return jwt.sign(user, process.env.SECRET_KEY);
+    return jwt.sign(user, process.env.SECRET_KEY, {expiresIn: '1d'});
 }
 
 const opt = {}

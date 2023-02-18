@@ -87,9 +87,17 @@ uploadPics.route("/")
     })
 })
 
-.put((req, res) => {
-    res.statusCode = 403;
-    res.end("not supported")
+.put(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+    console.log(req.body.day_number)
+    console.log(req.body.reponame)
+    UserDetails.findOneAndUpdate({userId: req.user._id}, {$set: {
+        number_of_challenge_days: req.body.day_number, github_repo_name: req.body.reponame
+    }}, {new: true})
+    .then(resp => {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resp);
+    })
 })
 
 .delete((req, res) => {

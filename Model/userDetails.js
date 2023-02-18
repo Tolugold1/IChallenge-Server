@@ -20,6 +20,14 @@ const detailSchema = new Schema({
     pics: {
         data: Buffer,
         contentType: String
+    },
+    number_of_challenge_days: {
+        type: Number,
+        default: 0
+    },
+    github_repo_name: {
+        type: String,
+        default: ""
     }
 })
 

@@ -39,6 +39,7 @@ githubRouter.route("/:userAcctName/:repo")
         return resp.json()
     }).then(resp => {
         // filtering and getting the sum of commit to a repo per day based on the day number 0-6 representing sunday to saturday. 
+        console.log(resp)
         const day_arr_with_commit = resp.filter(element => {
             if (element[2] !== 0) {
                 return element
