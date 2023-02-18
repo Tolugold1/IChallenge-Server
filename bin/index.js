@@ -3,13 +3,13 @@
 /**
  * Module dependencies.
  */
-
+require("dotenv").config()
 var app = require('../app');
 var debug = require('debug')('ichallengeserver:server');
 var http = require('http');
 var https = require("https");
 var fs = require("fs");
-require("dotenv").config()
+
 
 /**
  * Get port from environment and store in Express.
@@ -17,7 +17,7 @@ require("dotenv").config()
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-app.set("secPort", 3443);
+app.set("secPort", port+443);
 
 /**
  * Create HTTP server.
