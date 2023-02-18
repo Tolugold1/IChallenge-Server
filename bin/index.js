@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('./app');
+var app = require('../app');
 var debug = require('debug')('ichallengeserver:server');
 var http = require('http');
 var https = require("https");
@@ -46,7 +46,7 @@ var secureServer = https.createServer(opt, app);
  * secureServer listening on ...
  */
 
-secureServer.listen(process.env.PORT || app.get("secPort"), () => {
+secureServer.listen(app.get("secPort"), () => {
   console.log("Server listening on " + app.get("secPort"))
 })
 secureServer.on('error', onError);
