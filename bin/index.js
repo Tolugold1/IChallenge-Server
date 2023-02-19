@@ -18,7 +18,7 @@ var fs = require("fs");
 var port = normalizePort(process.env.PORT || '3000');
 /* app.set('port', port);*/
 app.set("secPort", port+443);
-var pt = process.env.PORT || app.get("secPort")
+var pt = process.env.PORT || 3443
 /**
  * Create HTTP server.
  */
@@ -106,7 +106,7 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = secureServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
