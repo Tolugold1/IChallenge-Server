@@ -18,7 +18,7 @@ var githubRouter = require("./routes/userGithubInfoRouter");
 var repoRouter = require("./routes/repo")
 
 var app = express();
-/* app.options(cors.cors, (req, res) => res.sendStatus(201));
+app.options(cors.cors, (req, res) => res.sendStatus(201));
 app.all("*", cors.cors, (req, res, next) => {
   if (req.secure) {
     return next();
@@ -26,7 +26,7 @@ app.all("*", cors.cors, (req, res, next) => {
     res.redirect(307, "https://" + req.hostname + ":" + app.get("secPort") + req.url)
   }
 })
- */
+
 mongoose.connect(process.env.MONGODB_URL)
 .then((db) => {
   console.log("Connection to the database is established...")
