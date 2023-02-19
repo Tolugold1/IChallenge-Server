@@ -81,7 +81,7 @@ router.post("/signin", cors.corsWithOption,  (req, res, next) => {
 router.post("/logout", (req, res, next) => {
   req.logOut((err) => {
     if (err) { return next(err) }
-    res.json({status: "http://localhost:3001/"})
+    res.json({status: "https://coral-fish-vest.cyclic.app/"})
   })
 })
 
