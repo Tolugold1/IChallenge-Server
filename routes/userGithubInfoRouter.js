@@ -38,21 +38,18 @@ githubRouter.route("/:userAcctName/:repo")
         res.statusCode = 200
         return resp.json()
     }).then(resp => {
-        // filtering and getting the sum of commit to a repo per day based on the day number 0-6 representing sunday to saturday. 
-        console.log(resp)
+        // filtering and getting the sum of commit to a repo per day based on the day number 0-6 representing sunday to saturday.
         const day_arr_with_commit = resp.filter(element => {
             if (element[2] !== 0) {
                 return element
             }
-        });
-        console.log(day_arr_with_commit)/* 
+        });/* 
         let day_number = [0, 1, 2, 3, 4, 5, 6];
         let weekday_commit = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0}; */
         let sum = 0
         day_arr_with_commit.forEach((element) => {
             sum += element[2]
         })
-        console.log(sum)
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.json(sum)
