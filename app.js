@@ -19,13 +19,13 @@ var repoRouter = require("./routes/repo")
 
 var app = express();
 app.options(cors.cors, (req, res) => res.sendStatus(201));
-app.all("*", cors.cors, (req, res, next) => {
+/* app.all("*", cors.cors, (req, res, next) => {
   if (req.secure) {
     return next();
   } else {
     res.redirect(307, "https://" + req.hostname + ":" + process.env.PORT + req.url)
   }
-})
+}) */
 
 mongoose.connect(process.env.MONGODB_URL)
 .then((db) => {
