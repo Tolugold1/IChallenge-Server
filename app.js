@@ -18,7 +18,7 @@ var githubRouter = require("./routes/userGithubInfoRouter");
 var repoRouter = require("./routes/repo")
 
 var app = express();
-
+app.options(cors.cors, (req, res) => res.sendStatus(201));
 app.all("*", cors.cors, (req, res, next) => {
   if (req.secure) {
     return next();

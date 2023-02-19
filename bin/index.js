@@ -3,36 +3,35 @@
 /**
  * Module dependencies.
  */
-require("dotenv").config()
+
 var app = require('../app');
 var debug = require('debug')('ichallengeserver:server');
 var http = require('http');
 var https = require("https");
 var fs = require("fs");
-
+require("dotenv").config()
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-/* app.set('port', port);*/
-app.set("secPort", port+443);
-var pt = process.env.PORT || 3443
+app.set('port', port);
+app.set("secPort", 3443);
+
 /**
  * Create HTTP server.
  */
 
-/* var server = http.createServer(app);*/
+var server = http.createServer(app);
 
 /**
- *
-listen on provided port, on all network interfaces.
+ * Listen on provided port, on all network interfaces.
  */
-/*
-server.listen(port);
+
+server.listen(process.env.PORT || port);
 server.on('error', onError);
-server.on('listening', onListening);*/
+server.on('listening', onListening);
 
 
 var opt = {
@@ -47,7 +46,7 @@ var secureServer = https.createServer(opt, app);
  * secureServer listening on ...
  */
 
-secureServer.listen(pt, () => {
+secureServer.listen(process.env.PORT || app.get("secPort"), () => {
   console.log("Server listening on " + app.get("secPort"))
 })
 secureServer.on('error', onError);
