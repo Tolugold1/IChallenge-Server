@@ -16,22 +16,23 @@ var fs = require("fs");
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+/* app.set('port', port);*/
 app.set("secPort", port+443);
-
+var pt = process.env.PORT || app.get("secPort")
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+/* var server = http.createServer(app);*/
 
 /**
- * Listen on provided port, on all network interfaces.
+ *
+listen on provided port, on all network interfaces.
  */
-
-server.listen(process.env.PORT || port);
+/*
+server.listen(port);
 server.on('error', onError);
-server.on('listening', onListening);
+server.on('listening', onListening);*/
 
 
 var opt = {
@@ -46,7 +47,7 @@ var secureServer = https.createServer(opt, app);
  * secureServer listening on ...
  */
 
-secureServer.listen(process.env.PORT || app.get("secPort"), () => {
+secureServer.listen(pt, () => {
   console.log("Server listening on " + app.get("secPort"))
 })
 secureServer.on('error', onError);
