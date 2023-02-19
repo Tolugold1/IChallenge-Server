@@ -15,23 +15,13 @@ require("dotenv").config()
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-app.set("secPort", 3443);
-var pt = process.env.PORT || app.get("secPort");
+/* var port = normalizePort(process.env.PORT || '3000'); */
+
+var port = process.env.PORT || 3443;
+app.set("secPort", port);
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(process.env.PORT || port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 
 var opt = {
@@ -46,7 +36,7 @@ var secureServer = https.createServer(opt, app);
  * secureServer listening on ...
  */
 
-secureServer.listen(pt, () => {
+secureServer.listen(port, () => {
   console.log("Server listening on " + app.get("secPort"))
 })
 secureServer.on('error', onError);
@@ -108,6 +98,6 @@ function onListening() {
   var addr = secureServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.pt;
+    : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
