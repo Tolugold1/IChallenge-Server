@@ -35,7 +35,7 @@ acceptRouter.route("/")
             err.status = 404;
             next(err)
         }
-    })
+    }).catch(err => next(err))
 })
 
 .put(cors.corsWithOption, (req, res, next) => {

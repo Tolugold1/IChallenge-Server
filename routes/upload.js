@@ -58,6 +58,7 @@ uploadPics.route("/")
             } else {
                 //read the image from the path after it has been uploaded to the server.
                 var filepath = fs.readFileSync(req.file.path)
+                console.log(req.file.path)
                 var pics = filepath.toString('base64');
                 //define the data to upload
                 var obj = {
