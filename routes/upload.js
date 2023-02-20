@@ -51,7 +51,7 @@ uploadPics.route("/")
 .post( cors.corsWithOption, authenticate.verifyUser, upload.single('pics'), (req, res, next) => {
     UserDetails.findOne({userId: req.user._id})
     .then(resp => {
-        if (resp === null) {
+        if (!resp) {
             if (req.file === null) {
                 err = new Error("File not selected");
                 err.status = 404;
