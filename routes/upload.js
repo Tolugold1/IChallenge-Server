@@ -5,11 +5,10 @@ const authenticate = require("../authenticate")
 const cors = require("./cors");
 const UserDetails = require("../Model/userDetails")
 const fs = require("fs");
-const User = require("../Model/user");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "public/images");
+        cb(null, "public/images/");
     },
 
     filename: (req, file, cb) => {
@@ -57,7 +56,7 @@ uploadPics.route("/")
                 err.status = 404;
                 next(err);
             } else {
-                //red the image from the path after it has been uploaded to the server.
+                //read the image from the path after it has been uploaded to the server.
                 var filepath = fs.readFileSync(req.file.path)
                 var pics = filepath.toString('base64');
                 //define the data to upload
