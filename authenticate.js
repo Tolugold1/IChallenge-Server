@@ -12,7 +12,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function(user) {
-    return jwt.sign(user, process.env.SECRET_KEY, {expiresIn: '1d'});
+    return jwt.sign(user, process.env.SECRET_KEY, {expiresIn: '1h'});
 }
 
 const opt = {}
