@@ -4,8 +4,8 @@ const urls = ["http://localhost:3000", "https://localhost:3443", "http://localho
 
 const corsDelegate = (req, cb) => {
     var corsOption;
-    console.log(req.header('Access-Control-Allow-Origin'));
-    if (urls.indexOf(req.header("Access-Control-Allow-Origin")) !== -1) {
+    console.log(req.header('Origin'));
+    if (urls.indexOf(req.header("Origin")) !== -1) {
         corsOption = { origin: true }
     } else {
         corsOption = { option: false }
