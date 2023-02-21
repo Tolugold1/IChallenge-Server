@@ -7,15 +7,15 @@ var logger = require('morgan');
 const passport = require("passport");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const cors = require("../routes/cors")
+const cors = require("./routes/cors")
 
-var indexRouter = require('../routes/index');
-var usersRouter = require('../routes/users');
-var uploadRouter = require("../routes/upload");
-var requestRouter = require("../routes/request");
-var acceptRouter = require("../routes/accept");
-var githubRouter = require("../routes/userGithubInfoRouter");
-var repoRouter = require("../routes/repo")
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var uploadRouter = require("./routes/upload");
+var requestRouter = require("./routes/request");
+var acceptRouter = require("./routes/accept");
+var githubRouter = require("./routes/userGithubInfoRouter");
+var repoRouter = require("./routes/repo")
 
 var app = express();
 app.options(cors.cors, (req, res) => res.sendStatus(200));

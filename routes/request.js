@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 var requestRouter = express.Router();
 const Request = require("../Model/request");
 const cors = require("./cors");
-const authenticate = require("./authenticate");
+const authenticate = require("../authenticate");
 
 requestRouter.use(bodyParser.json());
 requestRouter.route("/")
