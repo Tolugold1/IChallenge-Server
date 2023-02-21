@@ -33,8 +33,8 @@ mongoose.connect(process.env.MONGODB_URL)
 },(err) => console.log(err)).catch((err) => console.log(err));
 
 // view engine setup
-/* app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade'); */
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(cors.corsWithOption);
 app.use(logger('dev'));
