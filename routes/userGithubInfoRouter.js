@@ -1,5 +1,5 @@
 var express = require("express");
-const authenticate = require("../authenticate");
+const authenticate = require("./authenticate");
 const cors = require("./cors")
 var bodyParser = require("body-parser");
 var githubRouter = express.Router()

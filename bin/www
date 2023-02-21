@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../api/index.js');
 var debug = require('debug')('ichallengeserver:server');
 var http = require('http');
 var https = require("https");

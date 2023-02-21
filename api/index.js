@@ -7,16 +7,15 @@ var logger = require('morgan');
 const passport = require("passport");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const cors = require("./routes/cors")
+const cors = require("../routes/cors")
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var uploadRouter = require("./routes/upload");
-var requestRouter = require("./routes/request");
-var acceptRouter = require("./routes/accept");
-var githubRouter = require("./routes/userGithubInfoRouter");
-var repoRouter = require("./routes/repo");
-var uploadPics = require("./routes/profilePics")
+var indexRouter = require('../routes/index');
+var usersRouter = require('../routes/users');
+var uploadRouter = require("../routes/upload");
+var requestRouter = require("../routes/request");
+var acceptRouter = require("../routes/accept");
+var githubRouter = require("../routes/userGithubInfoRouter");
+var repoRouter = require("../routes/repo")
 
 var app = express();
 app.options(cors.cors, (req, res) => res.sendStatus(200));
@@ -60,7 +59,6 @@ app.use("/request", requestRouter);
 app.use("/accept", acceptRouter);
 app.use("/github", githubRouter);
 app.use("/repo", repoRouter);
-app.use("/pics", uploadPics);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
