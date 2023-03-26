@@ -10,7 +10,7 @@ const authenticate = require("../authenticate");
 router.use(bodyParser.json());
 router.options(cors.corsWithOption, (req, res) => { res.sendStatus(200); })
 /* GET users listing. */
-router.get('/', (req, res, next) => {
+router.get('/', cors.cors, (req, res, next) => {
   User.find()
   .then(user => {
     res.statusCode = 200;
@@ -86,7 +86,7 @@ router.post("/logout", (req, res, next) => {
 })
 
 
-router.get("/user", cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+router.get("/user", cors.cors, authenticate.verifyUser, (req, res, next) => {
   User.findOne({_id: req.user._id})
   .then((user) => {
     res.statusCode = 200;
@@ -96,7 +96,7 @@ router.get("/user", cors.corsWithOption, authenticate.verifyUser, (req, res, nex
 })
 
 router.route("/:userDetails") 
-.get(cors.corsWithOption, authenticate.verifyUser, (req, res, next) => {
+.get(cors.cors, authenticate.verifyUser, (req, res, next) => {
   User.findOne({_id: req.user._id})
   .then(resp => {
     if (resp.fullname !== req.params.userDetails) {
@@ -120,7 +120,7 @@ router.route("/:userDetails")
   })
 })
 
-router.get("/auth/github/login", cors.corsWithOption, passport.authenticate("github"), (req, res) => {
+/* router.get("/auth/github/login", cors.corsWithOption, passport.authenticate("github"), (req, res) => {
   var token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
@@ -136,5 +136,5 @@ router.get("/auth/github/callback", cors.cors, passport.authenticate('github'),
     res.redirect('http://localhost:3001/dashboard');
     return ;
 })
-
+ */
 module.exports = router;
