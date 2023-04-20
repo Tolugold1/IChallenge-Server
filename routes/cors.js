@@ -1,6 +1,6 @@
 const cors = require("cors");
 
-const urls = ["http://localhost:3000", "https://localhost:3443", "http://localhost:3001", "https://challenge-tolugold1.vercel.app", "https://coral-fish-vest.cyclic.app/", "https://maps.googleapis.com"];
+const urls = ["http://localhost:3000", "https://localhost:3443", "http://localhost:3001", "https://challenge-tolugold1.vercel.app", "https://coral-fish-vest.cyclic.app/", "https://challenge.netlify.app"];
 
 const corsDelegate = (req, cb) => {
     var corsOption;

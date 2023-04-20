@@ -81,7 +81,7 @@ router.post("/signin", cors.corsWithOption,  (req, res, next) => {
 router.post("/logout", (req, res, next) => {
   req.logOut((err) => {
     if (err) { return next(err) }
-    res.json({status: "http://localhost:3001/"}) // "https://challenge-umber-six.vercel.app/"
+    res.json({status: "https://challenge.netlify.app/"}) // "https://challenge-umber-six.vercel.app/"
   })
 })
 
@@ -137,25 +137,5 @@ router.get("/auth/github/callback", cors.cors, passport.authenticate('github'),
     return ;
 })
  */
-router.options(cors.corsWithOption, (req, res) => { res.sendStatus(200); })
-router.get("/yelp", cors.cors, (req, res, next)  => {
-
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=restaurant&name=harbour`
-
-   const options = {
-    headers: {
-      Authorization: 'Bearer AIzaSyBLLH0maK8an_DbIFIiaRX0daNTsJyBVl8',
-      "Content-Type": 'application/json',
-    }
-  };
-  fetch(url, options)
-  .then(res => res.json())
-  .then(resp => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.json({status: resp})
-  })
-  .catch(err => console.error('error:' + err.message))
-})
 
 module.exports = router;
