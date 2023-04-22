@@ -5,6 +5,7 @@ const passport = require("passport");
 const User = require("../Model/user");
 const cors = require("./cors");
 const authenticate = require("../authenticate");
+const userDetails = require("../Model/userDetails");
 
 
 router.use(bodyParser.json());
@@ -120,7 +121,7 @@ router.route("/:userDetails")
   })
 })
 
-/* router.get("/auth/github/login", cors.corsWithOption, passport.authenticate("github"), (req, res) => {
+router.get("/auth/github/login", cors.corsWithOption, passport.authenticate("github"), (req, res) => {
   var token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
@@ -129,13 +130,23 @@ router.route("/:userDetails")
 
 router.get("/auth/github/callback", cors.cors, passport.authenticate('github'),
   function(req, res) {
-    var token = authenticate.getToken({_id: req.user._id});
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.json({success: true, message: "Loging in with github is successful", token: token});
-    res.redirect('http://localhost:3001/dashboard');
-    return ;
+    userDetails.findById({"userId": req.user._id})
+    .then(resp => {
+      if (resp === null) {
+        res.statusCode = 302;
+        res.setHeader("Content-Type", "application/json");
+        res.redirect('http://localhost:3001/details');
+        return ;
+      } else {
+        var token = authenticate.getToken({_id: req.user._id});
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.json({success: true, message: "Logging in with github is successful", token: token});
+        res.redirect('http://localhost:3001/dashboard');
+        return ;
+      }
+    }).catch(err => console.log(err))
 })
- */
+
 
 module.exports = router;

@@ -6,6 +6,7 @@ const jwtExtract = require("passport-jwt").ExtractJwt;
 const jwtStrategy = require("passport-jwt").Strategy;
 const jwt = require("jsonwebtoken");
 const User = require("./Model/user");
+const config = require("./config")
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -36,7 +37,7 @@ exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
 exports.verifyUser = passport.authenticate("jwt", {session: "false"});
 
 
-/* exports.githubauth = passport.use(new GithubStrategy({
+exports.githubauth = passport.use(new GithubStrategy({
     clientID: config.github.clientId,
     clientSecret: config.github.clientSecret,
     callbackURL: "http://localhost:3000/users/auth/github/callback"
@@ -51,8 +52,7 @@ exports.verifyUser = passport.authenticate("jwt", {session: "false"});
             user = new User({username: profile.username});
             var names = profile.displayName.split(' ');
             user.firstname = names[0];
-            user.lastname = names[1];
-            user.githubId = profile.id
+            user.githubId = profile.id;
             user.save((err, user) => {
                 if (err) {
                     return done(err, false)
@@ -63,4 +63,4 @@ exports.verifyUser = passport.authenticate("jwt", {session: "false"});
         }
     })
 }
-)) */
+))
