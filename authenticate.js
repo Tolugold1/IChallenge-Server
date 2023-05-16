@@ -37,7 +37,7 @@ exports.jwtPassport = passport.use(new jwtStrategy(opt, (jwt_payload, done) => {
 exports.verifyUser = passport.authenticate("jwt", {session: "false"});
 
 
-exports.githubauth = passport.use(new GithubStrategy({
+/* exports.githubauth = passport.use(new GithubStrategy({
     clientID: config.github.clientId,
     clientSecret: config.github.clientSecret,
     callbackURL: "http://localhost:3000/users/auth/github/callback"
@@ -50,8 +50,8 @@ exports.githubauth = passport.use(new GithubStrategy({
             return done(null, user);
         } else {
             user = new User({username: profile.username});
-            var names = profile.displayName.split(' ');
-            user.firstname = names[0];
+            var name = profile.displayName;
+            user.fullname = name;
             user.githubId = profile.id;
             user.save((err, user) => {
                 if (err) {
@@ -63,4 +63,4 @@ exports.githubauth = passport.use(new GithubStrategy({
         }
     })
 }
-))
+)) */

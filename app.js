@@ -19,6 +19,7 @@ var repoRouter = require("./routes/repo")
 
 var app = express();
 app.options(cors.cors, (req, res) => res.sendStatus(200));
+
 /* app.all("*", cors.cors, (req, res, next) => {
   if (req.secure) {
     return next();
@@ -26,17 +27,17 @@ app.options(cors.cors, (req, res) => res.sendStatus(200));
     res.redirect(307, "https://" + req.hostname + ":" + process.env.PORT + req.url)
   }
 }) */
-
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL, { useUnifiedTopology: true }, { useNewUrlParser: true })
 .then((db) => {
   console.log("Connection to the database is established...")
 },(err) => console.log(err)).catch((err) => console.log(err));
 
+app.use(cors.cors);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(cors.corsWithOption);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
