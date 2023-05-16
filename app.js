@@ -27,7 +27,7 @@ app.options(cors.cors, (req, res) => res.sendStatus(200));
     res.redirect(307, "https://" + req.hostname + ":" + process.env.PORT + req.url)
   }
 }) */
-mongoose.connect(process.env.MONGODB_URL, { useUnifiedTopology: true }, { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URL, { useUnifiedTopology: true, useNewUrlParser: true  })
 .then((db) => {
   console.log("Connection to the database is established...")
 },(err) => console.log(err)).catch((err) => console.log(err));
