@@ -83,7 +83,7 @@ router.post("/signin", cors.corsWithOption,  (req, res, next) => {
 router.post("/logout", (req, res, next) => {
   req.logOut((err) => {
     if (err) { return next(err) }
-    res.json({status: "https://challengedeveloper.netlify.app/"}) // "https://challenge-umber-six.vercel.app/"
+    res.json({status: "https://challengedeveloper.vercel.app/"}) // "https://challenge-umber-six.vercel.app/"
   })
 })
 
